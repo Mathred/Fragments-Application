@@ -4,4 +4,10 @@
     <string name="home">Home</string>
     <string name="search">Search</string>
     <string name="favorites">Favorites</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_main_fragment">Main Fragment</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_settings_fragment">Settings Fragment</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_favorites_fragment">Favorites Fragment</string>
 </resources>
