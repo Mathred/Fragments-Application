@@ -14,4 +14,7 @@
     <string name="item2">item2</string>
     <string name="added_item">Added item</string>
     <string name="new_menu_item_added">Menu item added</string>
+    <string name="main">Main</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

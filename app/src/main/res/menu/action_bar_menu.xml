@@ -15,7 +15,7 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/action_favorite"
+        android:id="@+id/action_favorites"
         android:orderInCategory="20"
         android:title="@string/favorites"
         app:showAsAction="ifRoom" />
