@@ -10,4 +10,8 @@
     <string name="hello_settings_fragment">Settings Fragment</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_favorites_fragment">Favorites Fragment</string>
+    <string name="item1">item1</string>
+    <string name="item2">item2</string>
+    <string name="added_item">Added item</string>
+    <string name="new_menu_item_added">Menu item added</string>
 </resources>
