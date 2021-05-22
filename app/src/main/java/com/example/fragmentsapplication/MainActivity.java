@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                 addFragment(new SettingsFragment());
                 return true;
             case R.id.action_main:
-                addFragment(new MainFragment());
+                addFragment(new NoteListFragment());
                 return true;
             case R.id.action_favorites:
                 addFragment(new FavoritesFragment());
@@ -116,4 +116,5 @@ public class MainActivity extends AppCompatActivity {
 
         return true;
     }
+
 }

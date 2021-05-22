@@ -16,7 +16,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainFragment extends Fragment {
+public class NoteListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,7 +53,8 @@ public class MainFragment extends Fragment {
             });
             popupMenu.show();
         });
-
     }
+
+
 
 }
