@@ -24,12 +24,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
+        addFragment(NoteListFragment.newInstance());
     }
 
     private void initView() {
         Toolbar toolbar = initToolbar();
         initDrawer(toolbar);
-
     }
 
     private void initDrawer(Toolbar toolbar) {
