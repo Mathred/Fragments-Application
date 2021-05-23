@@ -24,6 +24,8 @@ import java.util.List;
 
 public class NoteListFragment extends Fragment {
 
+    NoteAdapter adapter;
+    NoteAdapter.OnItemClickListener onItemClickListener;
 
     public static NoteListFragment newInstance() {
         return new NoteListFragment();
@@ -41,12 +43,26 @@ public class NoteListFragment extends Fragment {
         return view;
     }
 
+
+
+
     private void initRecyclerView(RecyclerView recyclerView, NoteDataSource dataSource) {
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         final NoteAdapter adapter = new NoteAdapter(dataSource);
         recyclerView.setAdapter(adapter);
+
+        adapter.SetOnItemClickListener((view, position) -> {
+            NoteDetailsFragment noteDetailsFragment = NoteDetailsFragment.newInstance(dataSource.getNote(position));
+            assert getFragmentManager() != null;
+            getFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, noteDetailsFragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
+
     }
 
 }

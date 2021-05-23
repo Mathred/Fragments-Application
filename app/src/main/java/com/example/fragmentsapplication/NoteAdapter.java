@@ -3,7 +3,9 @@ package com.example.fragmentsapplication;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,9 +18,18 @@ import javax.sql.DataSource;
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
 
     NoteDataSource dataSource;
+    private OnItemClickListener itemClickListener;
+
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
+    }
 
     public NoteAdapter(NoteDataSource dataSource) {
         this.dataSource = dataSource;
+    }
+
+    public void SetOnItemClickListener(OnItemClickListener itemClickListener) {
+        this.itemClickListener = itemClickListener;
     }
 
     @NonNull
@@ -42,6 +53,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+        Note note;
         private TextView name;
         private TextView date;
         private CheckBox isFavorite;
@@ -52,22 +64,22 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
             date = itemView.findViewById(R.id.item_list_date);
             isFavorite = itemView.findViewById(R.id.item_list_favorite);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //TODO Implement creating new Fragment (Note details)
+            isFavorite.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                note.setFavorite(isFavorite.isChecked());
+            });
+
+            itemView.setOnClickListener(v -> {
+                if (itemClickListener != null) {
+                    itemClickListener.onItemClick(v,getAdapterPosition());
                 }
             });
         }
 
         public void setData(Note note){
+            this.note = note;
             name.setText(note.getName());
             date.setText(note.getDateCreated());
-            if (note.isFavorite()) {
-                isFavorite.setChecked(true);
-            } else {
-                isFavorite.setChecked(false);
-            }
+            isFavorite.setChecked(note.isFavorite());
         }
     }
 

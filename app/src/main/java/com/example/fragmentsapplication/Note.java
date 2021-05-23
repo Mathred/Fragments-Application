@@ -22,6 +22,10 @@ public class Note implements Parcelable {
         this.isFavorite = isFavorite;
     }
 
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
+
     public boolean isFavorite() {
         return isFavorite;
     }
