@@ -7,4 +7,5 @@
     <dimen name="card_textView_paddingStart">10dp</dimen>
     <dimen name="card_textView_paddingTop">5dp</dimen>
     <dimen name="card_date_textSize">12sp</dimen>
+    <dimen name="date_textView_width">300dp</dimen>
 </resources>

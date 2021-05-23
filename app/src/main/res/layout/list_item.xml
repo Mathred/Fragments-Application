@@ -22,15 +22,31 @@
             android:paddingEnd="@dimen/card_textView_paddingStart"
             android:paddingTop="@dimen/card_textView_paddingTop" />
 
-        <TextView
-            android:id="@+id/item_list_date"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="@tools:sample/date/ddmmyy"
-            android:textSize="@dimen/card_date_textSize"
-            android:paddingStart="@dimen/card_textView_paddingStart"
-            android:paddingEnd="@dimen/card_textView_paddingStart"
-            android:paddingTop="@dimen/card_textView_paddingTop" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/item_list_date"
+                android:layout_width="@dimen/date_textView_width"
+                android:layout_height="wrap_content"
+                tools:text="@tools:sample/date/ddmmyy"
+                android:textSize="@dimen/card_date_textSize"
+                android:paddingStart="@dimen/card_textView_paddingStart"
+                android:paddingEnd="@dimen/card_textView_paddingStart"
+                android:paddingTop="@dimen/card_textView_paddingTop"
+                android:layout_gravity="center_vertical"/>
+
+            <CheckBox
+                android:id="@+id/item_list_favorite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="@string/favorite"
+                android:textSize="@dimen/card_date_textSize"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 
