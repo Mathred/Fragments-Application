@@ -24,12 +24,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
+        addFragment(NoteListFragment.newInstance());
     }
 
     private void initView() {
         Toolbar toolbar = initToolbar();
         initDrawer(toolbar);
-
     }
 
     private void initDrawer(Toolbar toolbar) {
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                 addFragment(new SettingsFragment());
                 return true;
             case R.id.action_main:
-                addFragment(new MainFragment());
+                addFragment(new NoteListFragment());
                 return true;
             case R.id.action_favorites:
                 addFragment(new FavoritesFragment());
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void addFragment(Fragment fragment) {
+    public void addFragment(Fragment fragment) {
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragment)
@@ -116,4 +116,5 @@ public class MainActivity extends AppCompatActivity {
 
         return true;
     }
+
 }
