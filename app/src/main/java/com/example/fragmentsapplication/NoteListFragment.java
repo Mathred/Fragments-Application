@@ -1,31 +1,24 @@
 package com.example.fragmentsapplication;
 
-import android.app.Activity;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.PopupMenu;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.List;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class NoteListFragment extends Fragment {
 
-    NoteAdapter adapter;
+    DateManager dateManager = new DateManager();
     NoteAdapter.OnItemClickListener onItemClickListener;
+    private NoteAdapter adapter;
+    private RecyclerView recyclerView;
+    private NoteDataSource dataSource;
 
     public static NoteListFragment newInstance() {
         return new NoteListFragment();
@@ -35,22 +28,46 @@ public class NoteListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerView_noteList);
+        recyclerView = view.findViewById(R.id.recyclerView_noteList);
 
-        NoteDataSource dataSource = new NoteDataSourceImplementation().getDefaultNoteList();
-        initRecyclerView(recyclerView, dataSource);
+        dataSource = new NoteDataSourceImplementation().getDefaultNoteList();
+        initRecyclerView();
+
+        setHasOptionsMenu(true);
 
         return view;
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.cards_menu, menu);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_add:
+                int position = dataSource.addNote(new Note("Added note " + dataSource.getSize(),
+                        "This is added note",
+                        dateManager.getDateNowString(),
+                        false));
+                adapter.notifyItemInserted(position);
+                recyclerView.smoothScrollToPosition(position);
+                return true;
+            case R.id.action_clear:
+                dataSource.clearNoteData();
+                adapter.notifyDataSetChanged();
+                return true;
+        }
 
+        return super.onOptionsItemSelected(item);
+    }
 
-    private void initRecyclerView(RecyclerView recyclerView, NoteDataSource dataSource) {
+    private void initRecyclerView() {
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-        final NoteAdapter adapter = new NoteAdapter(dataSource);
+        adapter = new NoteAdapter(dataSource);
         recyclerView.setAdapter(adapter);
 
         adapter.SetOnItemClickListener((view, position) -> {

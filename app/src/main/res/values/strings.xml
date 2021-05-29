@@ -5,8 +5,6 @@
     <string name="search">Search</string>
     <string name="favorites">Favorites</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_main_fragment">Main Fragment</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_settings_fragment">Settings Fragment</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_favorites_fragment">Favorites Fragment</string>
@@ -20,4 +18,6 @@
     <string name="username">Username</string>
     <string name="email">email@mail.com</string>
     <string name="favorite">Favorite</string>
+    <string name="add">Add note</string>
+    <string name="clear">Clear all notes</string>
 </resources>
