@@ -20,8 +20,8 @@ public class Note implements Parcelable {
             return new Note[size];
         }
     };
-    private final String name;
-    private final String description;
+    private String name;
+    private String description;
     private String dateCreated;
     private boolean isFavorite;
     private List<Note> noteList = new ArrayList<>();
@@ -31,6 +31,14 @@ public class Note implements Parcelable {
         this.description = description;
         this.dateCreated = dateCreated;
         this.isFavorite = isFavorite;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     protected Note(Parcel in) {
