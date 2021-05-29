@@ -1,18 +1,24 @@
 package com.example.fragmentsapplication;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
+import java.util.Calendar;
+
 public class NoteDetailsFragment extends Fragment {
 
     protected static final String ARG_NOTE = "note";
+    private final DateManager dateManager = new DateManager();
     private Note note;
 
     public NoteDetailsFragment() {
@@ -43,11 +49,27 @@ public class NoteDetailsFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_note_details, container, false);
 
-        TextView noteNameTextView = view.findViewById(R.id.note_name);
-        noteNameTextView.setText(note.getName());
+        EditText noteNameEditText = view.findViewById(R.id.note_name);
+        noteNameEditText.setText(note.getName());
 
-        TextView noteDateCreatedTextView = view.findViewById(R.id.note_date_created);
-        noteDateCreatedTextView.setText(note.getDateCreated());
+        TextView noteDateCreatedEditText = view.findViewById(R.id.note_date_created);
+        noteDateCreatedEditText.setText(note.getDateCreated());
+
+        Button button = view.findViewById(R.id.change_date_button);
+        button.setOnClickListener(v -> {
+            Calendar date = Calendar.getInstance();
+            int mYear = date.get(Calendar.YEAR);
+            int mMonth = date.get(Calendar.MONTH);
+            int mDay = date.get(Calendar.DAY_OF_MONTH);
+
+            DatePickerDialog dialog = new DatePickerDialog(requireContext(), (view1, year, month, dayOfMonth) -> {
+                date.set(year, month, dayOfMonth);
+                note.setDateCreated(dateManager.getFormatter().format(date.getTime()));
+                noteDateCreatedEditText.setText(note.getDateCreated());
+            }, mYear, mMonth, mDay);
+            dialog.show();
+        }
+        );
 
         TextView noteDescriptionTextView = view.findViewById(R.id.note_description);
         noteDescriptionTextView.setText(note.getDescription());

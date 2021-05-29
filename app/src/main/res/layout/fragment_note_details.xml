@@ -11,39 +11,61 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <TextView
+        <EditText
             android:id="@+id/note_name"
-            android:layout_width="300dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/note_name"
+            android:importantForAutofill="no"
+            android:inputType="text"
             android:textSize="@dimen/name_textSize"
             tools:text="@tools:sample/lorem" />
 
         <CheckBox
             android:id="@+id/note_favorite"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="end"
+            android:layout_marginEnd="@dimen/isFavorite_marginEnd"
+            android:gravity="center_vertical"
             android:text="@string/favorite"
             android:textSize="@dimen/card_date_textSize" />
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/note_date_created"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="@tools:sample/date/ddmmyy" />
+        android:layout_height="37dp"
+        android:orientation="horizontal"
+        android:layout_marginStart="5dp">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        tools:text="@tools:sample/lorem/random" />
+        <TextView
+            android:id="@+id/note_date_created"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:textAlignment="gravity"
+            android:layout_weight="1"
+            tools:text="@tools:sample/date/ddmmyy" />
 
-    <TextView
+        <Button
+            android:id="@+id/change_date_button"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/change_date" />
+
+    </LinearLayout>
+
+    <EditText
         android:id="@+id/note_description"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        tools:text="@tools:sample/lorem/random"
+        android:importantForAutofill="no"
+        android:inputType="textMultiLine"
+        android:hint="@string/note_description"
+        tools:ignore="LabelFor" />
 
 
 </LinearLayout>
