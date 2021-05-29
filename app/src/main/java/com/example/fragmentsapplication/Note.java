@@ -9,8 +9,19 @@ import java.util.List;
 public class Note implements Parcelable {
 
 
-    private String name;
-    private String description;
+    public static final Creator<Note> CREATOR = new Creator<Note>() {
+        @Override
+        public Note createFromParcel(Parcel in) {
+            return new Note(in);
+        }
+
+        @Override
+        public Note[] newArray(int size) {
+            return new Note[size];
+        }
+    };
+    private final String name;
+    private final String description;
     private String dateCreated;
     private boolean isFavorite;
     private List<Note> noteList = new ArrayList<>();
@@ -22,12 +33,19 @@ public class Note implements Parcelable {
         this.isFavorite = isFavorite;
     }
 
-    public void setFavorite(boolean favorite) {
-        isFavorite = favorite;
+    protected Note(Parcel in) {
+        name = in.readString();
+        description = in.readString();
+        dateCreated = in.readString();
+        noteList = in.createTypedArrayList(Note.CREATOR);
     }
 
     public boolean isFavorite() {
         return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
     }
 
     public String getName() {
@@ -48,25 +66,6 @@ public class Note implements Parcelable {
 
     public void addNote(Note note) {
         noteList.add(note);
-    }
-
-        public static final Creator<Note> CREATOR = new Creator<Note>() {
-        @Override
-        public Note createFromParcel(Parcel in) {
-            return new Note(in);
-        }
-
-        @Override
-        public Note[] newArray(int size) {
-            return new Note[size];
-        }
-    };
-
-    protected Note(Parcel in) {
-        name = in.readString();
-        description = in.readString();
-        dateCreated = in.readString();
-        noteList = in.createTypedArrayList(Note.CREATOR);
     }
 
     @Override

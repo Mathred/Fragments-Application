@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -34,7 +33,7 @@ public class NoteListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
         recyclerView = view.findViewById(R.id.recyclerView_noteList);
 
-        dataSource = new NoteDataSourceImplementation().getDefaultNoteList();
+        dataSource = NoteDataSourceImplementation.getInstance();
         initRecyclerView();
 
         setHasOptionsMenu(true);
@@ -43,7 +42,7 @@ public class NoteListFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.cards_menu, menu);
     }
 
@@ -68,7 +67,7 @@ public class NoteListFragment extends Fragment {
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         MenuInflater inflater = requireActivity().getMenuInflater();
         inflater.inflate(R.menu.card_menu, menu);
@@ -79,7 +78,7 @@ public class NoteListFragment extends Fragment {
         int position = adapter.getMenuPosition();
         switch (item.getItemId()) {
             case R.id.action_update:
-                dataSource.updateNoteData(position,new Note("Edited note " + position,
+                dataSource.updateNoteData(position, new Note("Edited note " + position,
                         "This is edited note",
                         dateManager.getDateNowString(),
                         false));

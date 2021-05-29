@@ -9,8 +9,6 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
-import com.example.fragmentsapplication.Note;
-
 public class NoteDetailsFragment extends Fragment {
 
     protected static final String ARG_NOTE = "note";
@@ -33,7 +31,7 @@ public class NoteDetailsFragment extends Fragment {
         if (getArguments() != null) {
             note = getArguments().getParcelable(ARG_NOTE);
         } else {
-            note = new NoteDataSourceImplementation().getDefaultNoteList().getNote(0);
+            note = NoteDataSourceImplementation.getInstance().getNote(0);
         }
     }
 

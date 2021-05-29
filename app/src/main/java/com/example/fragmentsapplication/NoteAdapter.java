@@ -1,35 +1,26 @@
 package com.example.fragmentsapplication;
 
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.List;
-
-import javax.sql.DataSource;
-
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
 
     NoteDataSource dataSource;
     private OnItemClickListener itemClickListener;
-    private Fragment fragment;
+    private final Fragment fragment;
     private int menuPosition;
 
     public NoteAdapter(NoteDataSource dataSource, Fragment fragment) {
-        this.dataSource = dataSource;
+        this.dataSource = NoteDataSourceImplementation.getInstance();
         this.fragment = fragment;
-    }
-
-    public interface OnItemClickListener {
-        void onItemClick(View view, int position);
     }
 
     public void SetOnItemClickListener(OnItemClickListener itemClickListener) {
@@ -59,12 +50,16 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
         return dataSource.getSize();
     }
 
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         Note note;
-        private TextView name;
-        private TextView date;
-        private CheckBox isFavorite;
+        private final TextView name;
+        private final TextView date;
+        private final CheckBox isFavorite;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -77,28 +72,25 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
             }
 
 
-            isFavorite.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                note.setFavorite(isFavorite.isChecked());
-            });
+            isFavorite.setOnCheckedChangeListener((buttonView, isChecked) -> note.setFavorite(isFavorite.isChecked()));
 
             itemView.setOnClickListener(v -> {
                 if (itemClickListener != null) {
-                    itemClickListener.onItemClick(v,getAdapterPosition());
+                    itemClickListener.onItemClick(v, getAdapterPosition());
                 }
             });
 
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    menuPosition = getLayoutPosition();
-                    v.showContextMenu();
-                    return true;
+            itemView.setOnLongClickListener(v -> {
+                menuPosition = getLayoutPosition();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    v.showContextMenu(10, 10);
                 }
+                return true;
             });
 
         }
 
-        public void setData(Note note){
+        public void setData(Note note) {
             this.note = note;
             name.setText(note.getName());
             date.setText(note.getDateCreated());

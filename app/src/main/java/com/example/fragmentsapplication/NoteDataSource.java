@@ -1,6 +1,10 @@
 package com.example.fragmentsapplication;
 
 public interface NoteDataSource {
+    static NoteDataSource getInstance() {
+        return null;
+    }
+
     Note getNote(int position);
 
     int getSize();
