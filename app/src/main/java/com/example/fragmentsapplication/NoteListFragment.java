@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 public class NoteListFragment extends Fragment {
 
     DateManager dateManager = new DateManager();
@@ -37,6 +39,17 @@ public class NoteListFragment extends Fragment {
         initRecyclerView();
 
         setHasOptionsMenu(true);
+
+        FloatingActionButton floatingActionButton = view.findViewById(R.id.floating_action_add);
+        floatingActionButton.setOnClickListener(v -> {
+            NewNoteFragment newNoteFragment = NewNoteFragment.newInstance();
+            assert getFragmentManager() != null;
+            getFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, newNoteFragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
 
         return view;
     }

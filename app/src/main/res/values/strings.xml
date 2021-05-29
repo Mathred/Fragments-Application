@@ -26,4 +26,7 @@
     <string name="note_name">Name</string>
     <string name="change_date">Change date</string>
     <string name="note_description">Note description</string>
+    <string name="add_new_note">Add new note</string>
+    <string name="discard">discard</string>
+    <string name="save">Save</string>
 </resources>

@@ -33,6 +33,10 @@ public class Note implements Parcelable {
         this.isFavorite = isFavorite;
     }
 
+    public Note() {
+
+    }
+
     public void setName(String name) {
         this.name = name;
     }
