@@ -10,6 +10,15 @@ import java.util.Date;
 import java.util.List;
 
 public class Note implements Parcelable {
+
+    private final String pattern = "dd-MM-yyyy";
+    @SuppressLint("SimpleDateFormat")
+    private final SimpleDateFormat formatter = new SimpleDateFormat(pattern);
+    private String name;
+    private String description;
+    private String dateCreated;
+    private List<Note> noteList = new ArrayList<>();
+
     public static final Creator<Note> CREATOR = new Creator<Note>() {
         @Override
         public Note createFromParcel(Parcel in) {
@@ -21,14 +30,6 @@ public class Note implements Parcelable {
             return new Note[size];
         }
     };
-    private final String pattern = "dd-MM-yyyy";
-    @SuppressLint("SimpleDateFormat")
-    private final SimpleDateFormat formatter = new SimpleDateFormat(pattern);
-    private String name;
-    private String description;
-    private String dateCreated;
-    private List<Note> noteList = new ArrayList<>();
-
 
     public Note() {
 
@@ -65,10 +66,6 @@ public class Note implements Parcelable {
 
     public void setDateCreated(String dateCreated) {
         this.dateCreated = dateCreated;
-    }
-
-    public void addNote(Note note) {
-        noteList.add(note);
     }
 
     public List<Note> getDefaultNoteList() {
