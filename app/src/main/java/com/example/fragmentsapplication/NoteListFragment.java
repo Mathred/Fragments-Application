@@ -1,6 +1,7 @@
 package com.example.fragmentsapplication;
 
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -8,7 +9,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -63,11 +67,39 @@ public class NoteListFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = requireActivity().getMenuInflater();
+        inflater.inflate(R.menu.card_menu, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        int position = adapter.getMenuPosition();
+        switch (item.getItemId()) {
+            case R.id.action_update:
+                dataSource.updateNoteData(position,new Note("Edited note " + position,
+                        "This is edited note",
+                        dateManager.getDateNowString(),
+                        false));
+                adapter.notifyItemChanged(position);
+                return true;
+            case R.id.action_delete:
+                dataSource.deleteNote(position);
+                adapter.notifyItemRemoved(position);
+                return true;
+        }
+
+
+        return super.onContextItemSelected(item);
+    }
+
     private void initRecyclerView() {
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new NoteAdapter(dataSource);
+        adapter = new NoteAdapter(dataSource, this);
         recyclerView.setAdapter(adapter);
 
         adapter.SetOnItemClickListener((view, position) -> {
@@ -80,6 +112,11 @@ public class NoteListFragment extends Fragment {
                     .commit();
         });
 
+        DefaultItemAnimator animator = new DefaultItemAnimator();
+        animator.setAddDuration(1000);
+        animator.setRemoveDuration(1000);
+        animator.setChangeDuration(1000);
+        recyclerView.setItemAnimator(animator);
     }
 
 }

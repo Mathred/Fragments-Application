@@ -20,4 +20,7 @@
     <string name="favorite">Favorite</string>
     <string name="add">Add note</string>
     <string name="clear">Clear all notes</string>
+    <string name="update_note">Edit</string>
+    <string name="delete_note">Delete note</string>
+    <string name="hello_main_fragment">Main</string>
 </resources>

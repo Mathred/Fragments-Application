@@ -9,6 +9,7 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -19,17 +20,24 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
 
     NoteDataSource dataSource;
     private OnItemClickListener itemClickListener;
+    private Fragment fragment;
+    private int menuPosition;
+
+    public NoteAdapter(NoteDataSource dataSource, Fragment fragment) {
+        this.dataSource = dataSource;
+        this.fragment = fragment;
+    }
 
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
     }
 
-    public NoteAdapter(NoteDataSource dataSource) {
-        this.dataSource = dataSource;
-    }
-
     public void SetOnItemClickListener(OnItemClickListener itemClickListener) {
         this.itemClickListener = itemClickListener;
+    }
+
+    public int getMenuPosition() {
+        return menuPosition;
     }
 
     @NonNull
@@ -64,6 +72,11 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
             date = itemView.findViewById(R.id.item_list_date);
             isFavorite = itemView.findViewById(R.id.item_list_favorite);
 
+            if (fragment != null) {
+                fragment.registerForContextMenu(itemView);
+            }
+
+
             isFavorite.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 note.setFavorite(isFavorite.isChecked());
             });
@@ -73,6 +86,16 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
                     itemClickListener.onItemClick(v,getAdapterPosition());
                 }
             });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    menuPosition = getLayoutPosition();
+                    v.showContextMenu();
+                    return true;
+                }
+            });
+
         }
 
         public void setData(Note note){
