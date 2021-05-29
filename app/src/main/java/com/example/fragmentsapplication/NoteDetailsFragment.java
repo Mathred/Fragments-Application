@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -53,6 +54,9 @@ public class NoteDetailsFragment extends Fragment {
 
         CheckBox isFavorite = view.findViewById(R.id.note_favorite);
         isFavorite.setChecked(note.isFavorite());
+
+        isFavorite.setOnCheckedChangeListener((buttonView, isChecked) -> note.setFavorite(isChecked));
+
         return view;
     }
 

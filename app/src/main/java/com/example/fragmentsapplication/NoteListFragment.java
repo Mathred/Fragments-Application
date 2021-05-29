@@ -110,12 +110,6 @@ public class NoteListFragment extends Fragment {
                     .addToBackStack(null)
                     .commit();
         });
-
-        DefaultItemAnimator animator = new DefaultItemAnimator();
-        animator.setAddDuration(1000);
-        animator.setRemoveDuration(1000);
-        animator.setChangeDuration(1000);
-        recyclerView.setItemAnimator(animator);
     }
 
 }
