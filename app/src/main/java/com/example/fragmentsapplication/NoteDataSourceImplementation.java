@@ -8,18 +8,44 @@ import java.util.Date;
 import java.util.List;
 
 public class NoteDataSourceImplementation implements NoteDataSource{
-    List<Note> list;
+    List<Note> noteListDataSource;
 
     private final String pattern = "dd-MM-yyyy";
     @SuppressLint("SimpleDateFormat")
     private final SimpleDateFormat formatter = new SimpleDateFormat(pattern);
 
     public Note getNote(int i) {
-        return list.get(i);
+        return noteListDataSource.get(i);
     }
 
     public int getSize() {
-        return list.size();
+        return noteListDataSource.size();
+    }
+
+    @Override
+    public void deleteNote(int position) {
+        noteListDataSource.remove(position);
+    }
+
+    @Override
+    public void updateNoteData(int position, Note note) {
+        noteListDataSource.set(position, note);
+    }
+
+    /**
+     *
+     * @param note for addition
+     * @return position of added element
+     */
+    @Override
+    public int addNote(Note note) {
+        noteListDataSource.add(note);
+        return noteListDataSource.indexOf(note);
+    }
+
+    @Override
+    public void clearNoteData(int position) {
+        noteListDataSource.clear();
     }
 
     public NoteDataSourceImplementation getDefaultNoteList() {
@@ -41,10 +67,10 @@ public class NoteDataSourceImplementation implements NoteDataSource{
         defaultList.add(new Note("Fifth", "This is fifth note", dateNowString, false));
         defaultList.add(new Note("Sixth", "This is sixth note", dateNowString, false));
 
-        if (this.list != null) {
-            this.list.removeAll(this.list);
+        if (this.noteListDataSource != null) {
+            this.noteListDataSource.removeAll(this.noteListDataSource);
         }
-        this.list = defaultList;
+        this.noteListDataSource = defaultList;
 
         return this;
     }
