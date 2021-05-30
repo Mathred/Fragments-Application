@@ -39,6 +39,8 @@ public abstract class SwipeMenu extends ItemTouchHelper.SimpleCallback {
         public boolean onSingleTapUp(MotionEvent e) {
             for (MyButton button : buttonList) {
                 if (button.onClick(e.getX(), e.getY())) {
+                    //FIXME
+                    System.out.println("TEST");
                     break;
                 }
             }
@@ -199,7 +201,7 @@ public abstract class SwipeMenu extends ItemTouchHelper.SimpleCallback {
 
     public abstract void instantiateMyButton(RecyclerView.ViewHolder viewHolder, List<MyButton> buffer);
 
-    private class MyButton {
+    public class MyButton {
         private String text;
         private int textSize;
         private int color;
@@ -213,20 +215,18 @@ public abstract class SwipeMenu extends ItemTouchHelper.SimpleCallback {
                         String text,
                         int textSize,
                         int color,
-                        int position,
-                        RectF clickRegion,
                         MyButtonClickListener listener) {
             this.context = context;
             resources = context.getResources();
             this.text = text;
             this.textSize = textSize;
             this.color = color;
-            this.position = position;
-            this.clickRegion = clickRegion;
             this.listener = listener;
         }
 
         public boolean onClick(float x, float y) {
+            //FIXME
+            System.out.println("TEST");
             if (clickRegion != null && clickRegion.contains(x, y)) {
                 listener.onClick(position);
                 return true;

@@ -1,5 +1,6 @@
 package com.example.fragmentsapplication;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -10,12 +11,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.List;
 
 public class NoteListFragment extends Fragment {
 
@@ -50,6 +54,8 @@ public class NoteListFragment extends Fragment {
                     .addToBackStack(null)
                     .commit();
         });
+
+
 
         return view;
     }
@@ -123,6 +129,21 @@ public class NoteListFragment extends Fragment {
                     .addToBackStack(null)
                     .commit();
         });
+
+        SwipeMenu swipeMenu = new SwipeMenu(requireContext(),recyclerView,200) {
+
+            @Override
+            public void instantiateMyButton(RecyclerView.ViewHolder viewHolder, List<SwipeMenu.MyButton> buffer) {
+                buffer.add(new MyButton(getContext(), "Delete", 40, Color.RED, position -> {
+                    //FIXME
+                    System.out.println("TEST");
+                    dataSource.deleteNote(position);
+                    adapter.notifyItemRemoved(position);
+                }));
+            }
+        };
+
+
     }
 
 }
