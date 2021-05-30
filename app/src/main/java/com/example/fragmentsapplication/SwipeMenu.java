@@ -39,8 +39,6 @@ public abstract class SwipeMenu extends ItemTouchHelper.SimpleCallback {
         public boolean onSingleTapUp(MotionEvent e) {
             for (MyButton button : buttonList) {
                 if (button.onClick(e.getX(), e.getY())) {
-                    //FIXME
-                    System.out.println("TEST");
                     break;
                 }
             }
@@ -225,8 +223,6 @@ public abstract class SwipeMenu extends ItemTouchHelper.SimpleCallback {
         }
 
         public boolean onClick(float x, float y) {
-            //FIXME
-            System.out.println("TEST");
             if (clickRegion != null && clickRegion.contains(x, y)) {
                 listener.onClick(position);
                 return true;
