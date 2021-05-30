@@ -8,4 +8,5 @@
     <dimen name="card_textView_paddingTop">5dp</dimen>
     <dimen name="card_date_textSize">12sp</dimen>
     <dimen name="date_textView_width">300dp</dimen>
+    <dimen name="isFavorite_marginEnd">5dp</dimen>
 </resources>
