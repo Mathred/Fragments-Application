@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -55,7 +56,25 @@ public class NoteListFragment extends Fragment {
                     .commit();
         });
 
+        SwipeMenu swipeMenu = new SwipeMenu(requireContext(),recyclerView,200) {
 
+            @Override
+            public void instantiateMyButton(RecyclerView.ViewHolder viewHolder, List<SwipeMenu.MyButton> buffer) {
+                buffer.add(new MyButton(getContext(), "Delete", 40, Color.RED, position -> {
+                    dataSource.deleteNote(position);
+                    adapter.notifyItemRemoved(position);
+                }));
+                buffer.add(new MyButton(getContext(), "Edit", 40, Color.BLUE, position -> {
+                    NoteDetailsFragment noteDetailsFragment = NoteDetailsFragment.newInstance(dataSource.getNote(position));
+                    assert getFragmentManager() != null;
+                    getFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, noteDetailsFragment)
+                            .addToBackStack(null)
+                            .commit();
+                }));
+            }
+        };
 
         return view;
     }
@@ -130,18 +149,7 @@ public class NoteListFragment extends Fragment {
                     .commit();
         });
 
-        SwipeMenu swipeMenu = new SwipeMenu(requireContext(),recyclerView,200) {
 
-            @Override
-            public void instantiateMyButton(RecyclerView.ViewHolder viewHolder, List<SwipeMenu.MyButton> buffer) {
-                buffer.add(new MyButton(getContext(), "Delete", 40, Color.RED, position -> {
-                    //FIXME
-                    System.out.println("TEST");
-                    dataSource.deleteNote(position);
-                    adapter.notifyItemRemoved(position);
-                }));
-            }
-        };
 
 
     }
