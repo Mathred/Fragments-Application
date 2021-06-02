@@ -40,10 +40,16 @@ public class NoteListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
         recyclerView = view.findViewById(R.id.recyclerView_noteList);
 
-        dataSource = NoteDataSourceImplementation.getInstance();
         initRecyclerView();
-
         setHasOptionsMenu(true);
+
+        dataSource = new NoteDataSourceFirebaseImpl().init(new NoteDataSourceResponse() {
+            @Override
+            public void initialized(NoteDataSource noteDataSource) {
+                adapter.notifyDataSetChanged();
+            }
+        });
+
 
         FloatingActionButton floatingActionButton = view.findViewById(R.id.floating_action_add);
         floatingActionButton.setOnClickListener(v -> {

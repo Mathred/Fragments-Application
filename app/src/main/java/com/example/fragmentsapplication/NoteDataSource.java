@@ -1,9 +1,8 @@
 package com.example.fragmentsapplication;
 
 public interface NoteDataSource {
-    static NoteDataSource getInstance() {
-        return null;
-    }
+
+    NoteDataSource init(NoteDataSourceResponse noteDataSourceResponse);
 
     Note getNote(int position);
 
@@ -13,7 +12,7 @@ public interface NoteDataSource {
 
     void updateNoteData(int position, Note note);
 
-    int addNote(Note note);
+    void addNote(Note note);
 
     void clearNoteData();
 }

@@ -8,6 +8,20 @@ import java.util.List;
 
 public class Note implements Parcelable {
 
+    private String id;
+    private String name;
+    private String description;
+    private String dateCreated;
+    private boolean isFavorite;
+
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public static final Creator<Note> CREATOR = new Creator<Note>() {
         @Override
@@ -20,11 +34,6 @@ public class Note implements Parcelable {
             return new Note[size];
         }
     };
-    private String name;
-    private String description;
-    private String dateCreated;
-    private boolean isFavorite;
-    private List<Note> noteList = new ArrayList<>();
 
     public Note(String name, String description, String dateCreated, boolean isFavorite) {
         this.name = name;
@@ -49,7 +58,6 @@ public class Note implements Parcelable {
         name = in.readString();
         description = in.readString();
         dateCreated = in.readString();
-        noteList = in.createTypedArrayList(Note.CREATOR);
     }
 
     public boolean isFavorite() {
@@ -76,10 +84,6 @@ public class Note implements Parcelable {
         this.dateCreated = dateCreated;
     }
 
-    public void addNote(Note note) {
-        noteList.add(note);
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -90,6 +94,5 @@ public class Note implements Parcelable {
         dest.writeString(name);
         dest.writeString(description);
         dest.writeString(dateCreated);
-        dest.writeTypedList(noteList);
     }
 }

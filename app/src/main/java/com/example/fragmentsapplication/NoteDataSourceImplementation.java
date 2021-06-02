@@ -41,6 +41,11 @@ public class NoteDataSourceImplementation implements NoteDataSource {
 
     }
 
+    @Override
+    public NoteDataSource init(NoteDataSourceResponse noteDataSourceResponse) {
+        return null;
+    }
+
     public Note getNote(int i) {
         return noteListDataSource.get(i);
     }
@@ -61,10 +66,9 @@ public class NoteDataSourceImplementation implements NoteDataSource {
 
     /**
      * @param note for addition
-     * @return position of added element
      */
     @Override
-    public int addNote(Note note) {
+    public void addNote(Note note) {
         noteListDataSource.add(note);
         return noteListDataSource.indexOf(note);
     }
