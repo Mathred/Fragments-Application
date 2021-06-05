@@ -1,4 +1,4 @@
-package com.example.fragmentsapplication;
+package com.example.fragmentsapplication.data;
 
 public interface NoteDataSource {
 

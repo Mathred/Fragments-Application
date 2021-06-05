@@ -1,4 +1,4 @@
-package com.example.fragmentsapplication;
+package com.example.fragmentsapplication.swipeMenu;
 
 import android.content.Context;
 import android.content.res.Resources;

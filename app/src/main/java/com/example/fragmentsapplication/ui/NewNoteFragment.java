@@ -1,4 +1,4 @@
-package com.example.fragmentsapplication;
+package com.example.fragmentsapplication.ui;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
@@ -6,8 +6,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +13,12 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.example.fragmentsapplication.DateManager;
+import com.example.fragmentsapplication.data.Note;
+import com.example.fragmentsapplication.data.NoteDataSource;
+import com.example.fragmentsapplication.data.NoteDataSourceImplementation;
+import com.example.fragmentsapplication.R;
 
 import java.util.Calendar;
 

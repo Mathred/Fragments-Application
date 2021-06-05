@@ -15,6 +15,9 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import com.example.fragmentsapplication.ui.FavoritesFragment;
+import com.example.fragmentsapplication.ui.NoteListFragment;
+import com.example.fragmentsapplication.ui.SettingsFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {

@@ -1,4 +1,4 @@
-package com.example.fragmentsapplication;
+package com.example.fragmentsapplication.ui;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,13 +11,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.fragmentsapplication.DateManager;
+import com.example.fragmentsapplication.R;
+import com.example.fragmentsapplication.data.Note;
+import com.example.fragmentsapplication.data.NoteAdapter;
+import com.example.fragmentsapplication.data.NoteDataSource;
+import com.example.fragmentsapplication.data.NoteDataSourceFirebaseImpl;
+import com.example.fragmentsapplication.data.NoteDataSourceResponse;
+import com.example.fragmentsapplication.swipeMenu.SwipeMenu;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -62,7 +67,7 @@ public class NoteListFragment extends Fragment {
                     .commit();
         });
 
-        SwipeMenu swipeMenu = new SwipeMenu(requireContext(),recyclerView,200) {
+        SwipeMenu swipeMenu = new SwipeMenu(requireContext(), recyclerView, 200) {
 
             @Override
             public void instantiateMyButton(RecyclerView.ViewHolder viewHolder, List<SwipeMenu.MyButton> buffer) {
@@ -94,12 +99,12 @@ public class NoteListFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add:
-                int position = dataSource.addNote(new Note("Added note " + dataSource.getSize(),
+                dataSource.addNote(new Note("Added note " + dataSource.getSize(),
                         "This is added note",
                         dateManager.getDateNowString(),
                         false));
-                adapter.notifyItemInserted(position);
-                recyclerView.smoothScrollToPosition(position);
+                adapter.notifyItemInserted(dataSource.getSize() - 1);
+                recyclerView.smoothScrollToPosition(dataSource.getSize() - 1);
                 return true;
             case R.id.action_clear:
                 dataSource.clearNoteData();
@@ -154,8 +159,6 @@ public class NoteListFragment extends Fragment {
                     .addToBackStack(null)
                     .commit();
         });
-
-
 
 
     }

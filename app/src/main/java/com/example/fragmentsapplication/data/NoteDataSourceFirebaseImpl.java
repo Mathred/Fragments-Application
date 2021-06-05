@@ -1,4 +1,4 @@
-package com.example.fragmentsapplication;
+package com.example.fragmentsapplication.data;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
@@ -50,6 +50,7 @@ public class NoteDataSourceFirebaseImpl implements NoteDataSource {
                             }
 
                             Log.d(TAG, "isSuccessful");
+                            noteDataSourceResponse.initialized(NoteDataSourceFirebaseImpl.this);
 
                         } else {
                             Log.d(TAG, "notSuccessful");

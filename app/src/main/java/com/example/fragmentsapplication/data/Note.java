@@ -1,10 +1,7 @@
-package com.example.fragmentsapplication;
+package com.example.fragmentsapplication.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Note implements Parcelable {
 

@@ -1,6 +1,5 @@
-package com.example.fragmentsapplication;
+package com.example.fragmentsapplication.data;
 
-import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 

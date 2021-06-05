@@ -1,4 +1,4 @@
-package com.example.fragmentsapplication;
+package com.example.fragmentsapplication.ui;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
@@ -13,6 +13,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+
+import com.example.fragmentsapplication.DateManager;
+import com.example.fragmentsapplication.data.Note;
+import com.example.fragmentsapplication.data.NoteDataSourceImplementation;
+import com.example.fragmentsapplication.R;
 
 import java.util.Calendar;
 

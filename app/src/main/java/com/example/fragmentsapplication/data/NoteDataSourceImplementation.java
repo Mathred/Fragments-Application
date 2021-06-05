@@ -1,4 +1,6 @@
-package com.example.fragmentsapplication;
+package com.example.fragmentsapplication.data;
+
+import com.example.fragmentsapplication.DateManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +72,6 @@ public class NoteDataSourceImplementation implements NoteDataSource {
     @Override
     public void addNote(Note note) {
         noteListDataSource.add(note);
-        return noteListDataSource.indexOf(note);
     }
 
     @Override
