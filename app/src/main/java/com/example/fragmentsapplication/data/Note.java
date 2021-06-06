@@ -1,13 +1,11 @@
-package com.example.fragmentsapplication;
+package com.example.fragmentsapplication.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 public class Note implements Parcelable {
-
 
     public static final Creator<Note> CREATOR = new Creator<Note>() {
         @Override
@@ -20,13 +18,13 @@ public class Note implements Parcelable {
             return new Note[size];
         }
     };
+    private String id;
     private String name;
     private String description;
-    private String dateCreated;
+    private Date dateCreated;
     private boolean isFavorite;
-    private List<Note> noteList = new ArrayList<>();
 
-    public Note(String name, String description, String dateCreated, boolean isFavorite) {
+    public Note(String name, String description, Date dateCreated, boolean isFavorite) {
         this.name = name;
         this.description = description;
         this.dateCreated = dateCreated;
@@ -37,19 +35,19 @@ public class Note implements Parcelable {
 
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     protected Note(Parcel in) {
         name = in.readString();
         description = in.readString();
-        dateCreated = in.readString();
-        noteList = in.createTypedArrayList(Note.CREATOR);
+        dateCreated = new Date(in.readLong());
+        isFavorite = in.readByte() != 0;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public boolean isFavorite() {
@@ -64,20 +62,24 @@ public class Note implements Parcelable {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getDescription() {
         return description;
     }
 
-    public String getDateCreated() {
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Date getDateCreated() {
         return dateCreated;
     }
 
-    public void setDateCreated(String dateCreated) {
+    public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
-    }
-
-    public void addNote(Note note) {
-        noteList.add(note);
     }
 
     @Override
@@ -89,7 +91,7 @@ public class Note implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
         dest.writeString(description);
-        dest.writeString(dateCreated);
-        dest.writeTypedList(noteList);
+        dest.writeLong(dateCreated.getTime());
+        dest.writeByte((byte) (isFavorite ? 1 : 0));
     }
 }

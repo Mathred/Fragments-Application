@@ -29,4 +29,5 @@
     <string name="add_new_note">Add new note</string>
     <string name="discard">discard</string>
     <string name="save">Save</string>
+    <string name="default_note_list">Reset to default note list</string>
 </resources>

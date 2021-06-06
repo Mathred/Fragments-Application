@@ -1,26 +1,33 @@
-package com.example.fragmentsapplication;
+package com.example.fragmentsapplication.data;
 
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.fragmentsapplication.R;
+
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
 
+    private final Fragment fragment;
     NoteDataSource dataSource;
     private OnItemClickListener itemClickListener;
-    private final Fragment fragment;
     private int menuPosition;
 
-    public NoteAdapter(NoteDataSource dataSource, Fragment fragment) {
-        this.dataSource = NoteDataSourceImplementation.getInstance();
+    public NoteAdapter(Fragment fragment) {
         this.fragment = fragment;
+    }
+
+    public void setDataSource(NoteDataSource dataSource) {
+        this.dataSource = dataSource;
+        notifyDataSetChanged();
     }
 
     public void SetOnItemClickListener(OnItemClickListener itemClickListener) {
@@ -57,10 +64,10 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        Note note;
         private final TextView name;
         private final TextView date;
         private final CheckBox isFavorite;
+        Note note;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -72,8 +79,13 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
                 fragment.registerForContextMenu(itemView);
             }
 
-
-            isFavorite.setOnCheckedChangeListener((buttonView, isChecked) -> note.setFavorite(isFavorite.isChecked()));
+            isFavorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    note.setFavorite(isFavorite.isChecked());
+                    dataSource.updateNoteData(note);
+                }
+            });
 
             itemView.setOnClickListener(v -> {
                 if (itemClickListener != null) {
@@ -94,7 +106,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
         public void setData(Note note) {
             this.note = note;
             name.setText(note.getName());
-            date.setText(note.getDateCreated());
+            date.setText((String.valueOf(note.getDateCreated())));
             isFavorite.setChecked(note.isFavorite());
         }
     }

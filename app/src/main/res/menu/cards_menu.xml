@@ -7,11 +7,20 @@
         android:orderInCategory="10"
         android:title="@string/add"
         app:showAsAction="always" />
+
     <item
         android:id="@+id/action_clear"
         android:icon="@android:drawable/ic_notification_clear_all"
         android:orderInCategory="10"
         android:title="@string/clear"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_resetToDefaultList"
+        android:icon="@android:drawable/ic_notification_clear_all"
+        android:orderInCategory="10"
+        android:title="@string/default_note_list"
+        app:showAsAction="never" />
+
 
 </menu>
