@@ -3,12 +3,14 @@ package com.example.fragmentsapplication.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Date;
+
 public class Note implements Parcelable {
 
     private String id;
     private String name;
     private String description;
-    private String dateCreated;
+    private Date dateCreated;
     private boolean isFavorite;
 
 
@@ -32,7 +34,7 @@ public class Note implements Parcelable {
         }
     };
 
-    public Note(String name, String description, String dateCreated, boolean isFavorite) {
+    public Note(String name, String description, Date dateCreated, boolean isFavorite) {
         this.name = name;
         this.description = description;
         this.dateCreated = dateCreated;
@@ -54,7 +56,8 @@ public class Note implements Parcelable {
     protected Note(Parcel in) {
         name = in.readString();
         description = in.readString();
-        dateCreated = in.readString();
+        dateCreated = new Date(in.readLong());
+        isFavorite = in.readByte() != 0;
     }
 
     public boolean isFavorite() {
@@ -73,11 +76,11 @@ public class Note implements Parcelable {
         return description;
     }
 
-    public String getDateCreated() {
+    public Date getDateCreated() {
         return dateCreated;
     }
 
-    public void setDateCreated(String dateCreated) {
+    public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
     }
 
@@ -90,6 +93,7 @@ public class Note implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
         dest.writeString(description);
-        dest.writeString(dateCreated);
+        dest.writeLong(dateCreated.getTime());
+        dest.writeByte((byte) (isFavorite ? 1 : 0));
     }
 }

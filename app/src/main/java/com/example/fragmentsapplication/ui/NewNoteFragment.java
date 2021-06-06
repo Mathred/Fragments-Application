@@ -1,6 +1,5 @@
 package com.example.fragmentsapplication.ui;
 
-import android.app.DatePickerDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,10 +16,9 @@ import android.widget.TextView;
 import com.example.fragmentsapplication.DateManager;
 import com.example.fragmentsapplication.data.Note;
 import com.example.fragmentsapplication.data.NoteDataSource;
-import com.example.fragmentsapplication.data.NoteDataSourceImplementation;
+import com.example.fragmentsapplication.data.NoteDataSourceFirebaseImpl;
 import com.example.fragmentsapplication.R;
-
-import java.util.Calendar;
+import com.example.fragmentsapplication.data.NoteDataSourceResponse;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -52,27 +50,24 @@ public class NewNoteFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_new_note, container, false);
 
-        dataSource = NoteDataSourceImplementation.getInstance();
+        dataSource = new NoteDataSourceFirebaseImpl().init(new NoteDataSourceResponse() {
+            @Override
+            public void initialized(NoteDataSource noteDataSource) {
+            }
+        });
 
         initView(view);
-
         return view;
     }
 
     private void initView(View view) {
 
         EditText noteNameEditText = view.findViewById(R.id.new_note_name);
-
-        TextView noteDateCreatedEditText = initDatePicker(view);
-
         EditText noteDescriptionEditText = view.findViewById(R.id.new_note_description);
-
         CheckBox isFavorite = view.findViewById(R.id.new_note_favorite);
         isFavorite.setChecked(false);
-
         initSaveButton(view,
                 noteNameEditText,
-                noteDateCreatedEditText,
                 noteDescriptionEditText,
                 isFavorite);
         initDiscardButton(view);
@@ -84,28 +79,13 @@ public class NewNoteFragment extends Fragment {
         TextView noteDateCreatedEditText = view.findViewById(R.id.new_note_date_created);
         noteDateCreatedEditText.setText(dateManager.getDateNowString());
 
-        Button changeDateButton = view.findViewById(R.id.new_note_change_date_button);
-        changeDateButton.setOnClickListener(v -> {
-                    Calendar date = Calendar.getInstance();
-                    int mYear = date.get(Calendar.YEAR);
-                    int mMonth = date.get(Calendar.MONTH);
-                    int mDay = date.get(Calendar.DAY_OF_MONTH);
-
-                    DatePickerDialog dialog = new DatePickerDialog(requireContext(), (view1, year, month, dayOfMonth) -> {
-                        date.set(year, month, dayOfMonth);
-                        noteDateCreatedEditText.setText(dateManager.getFormatter().format(date.getTime()));
-                    }, mYear, mMonth, mDay);
-                    dialog.show();
-                }
-        );
         return noteDateCreatedEditText;
     }
 
-    private void initSaveButton(View view, EditText noteNameEditText, TextView noteDateCreatedEditText, EditText noteDescriptionEditText, CheckBox isFavorite) {
+    private void initSaveButton(View view, EditText noteNameEditText, EditText noteDescriptionEditText, CheckBox isFavorite) {
         Button saveButton = view.findViewById(R.id.action_save_new_note);
         saveButton.setOnClickListener(v -> {
             note.setName(String.valueOf(noteNameEditText.getText()));
-            note.setDateCreated(String.valueOf(noteDateCreatedEditText.getText()));
             note.setFavorite(isFavorite.isChecked());
             note.setDescription(String.valueOf(noteDescriptionEditText.getText()));
             dataSource.addNote(note);

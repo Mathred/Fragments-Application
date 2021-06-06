@@ -17,6 +17,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +32,22 @@ public class NoteDataSourceFirebaseImpl implements NoteDataSource {
 
     private List<Note> noteList = new ArrayList<>();
 
+    private List<Note> defaultNoteList = new ArrayList<Note>() {{
+        add(new Note("First", "This is first note", new Date(), true));
+        add(new Note("Second", "This is second note", new Date(), false));
+        add(new Note("Third", "This is third note", new Date(), false));
+        add(new Note("Forth", "This is forth note", new Date(), false));
+        add(new Note("Fifth", "This is fifth note", new Date(), false));
+        add(new Note("Sixth", "This is sixth note", new Date(), false));
+        add(new Note("Seven", "This is seventh note", new Date(), false));
+        add(new Note("Eight", "This is eighth note", new Date(), false));
+        add(new Note("Nine", "This is ninth note", new Date(), false));
+        add(new Note("Ten", "This is tenth note", new Date(), false));
+        add(new Note("Eleven", "This is eleventh note", new Date(), false));
+        add(new Note("Twelve", "This is twelfth note", new Date(), false));
+        add(new Note("Thirteen", "This is thirteenth note", new Date(), false));
+    }};
+
     @Override
     public NoteDataSource init(NoteDataSourceResponse noteDataSourceResponse) {
         collection.orderBy(NoteDataMapping.Fields.DATE_CREATED, Query.Direction.DESCENDING)
@@ -44,7 +61,6 @@ public class NoteDataSourceFirebaseImpl implements NoteDataSource {
 
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Map<String, Object> doc = document.getData();
-
                                 Note note = NoteDataMapping.toNoteData(document.getId(), doc);
                                 noteList.add(note);
                             }
@@ -106,7 +122,16 @@ public class NoteDataSourceFirebaseImpl implements NoteDataSource {
         for (Note note : noteList) {
             collection.document(note.getId()).delete();
         }
-
         noteList = new ArrayList<>();
     }
+
+    @Override
+    public void resetNoteList() {
+        clearNoteData();
+
+        for (Note note : defaultNoteList) {
+            addNote(note);
+        }
+    }
 }
+

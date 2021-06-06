@@ -20,9 +20,13 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
     private final Fragment fragment;
     private int menuPosition;
 
-    public NoteAdapter(NoteDataSource dataSource, Fragment fragment) {
-        this.dataSource = NoteDataSourceImplementation.getInstance();
+    public NoteAdapter(Fragment fragment) {
         this.fragment = fragment;
+    }
+
+    public void setDataSource(NoteDataSource dataSource) {
+        this.dataSource = dataSource;
+        notifyDataSetChanged();
     }
 
     public void SetOnItemClickListener(OnItemClickListener itemClickListener) {
@@ -96,7 +100,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
         public void setData(Note note) {
             this.note = note;
             name.setText(note.getName());
-            date.setText(note.getDateCreated());
+            date.setText((CharSequence) note.getDateCreated());
             isFavorite.setChecked(note.isFavorite());
         }
     }

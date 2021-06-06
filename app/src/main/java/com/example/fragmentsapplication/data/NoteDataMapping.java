@@ -1,5 +1,7 @@
 package com.example.fragmentsapplication.data;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,9 +18,12 @@ public class NoteDataMapping {
     }
 
     public static Note toNoteData(String id, Map<String, Object> doc) {
+
+        Timestamp timestamp = (Timestamp) doc.get(Fields.DATE_CREATED);
+
         String name = (String) doc.get(Fields.NAME);
         String description = (String) doc.get(Fields.DESCRIPTION);
-        String dateCreated = (String) doc.get(Fields.DATE_CREATED);
+
         boolean isFavorite;
         if (doc.get(Fields.IS_FAVORITE) == null) {
             isFavorite = false;
@@ -29,7 +34,7 @@ public class NoteDataMapping {
         Note note = new Note(
                 name,
                 description,
-                dateCreated,
+                new Date(timestamp.getTime()),
                 isFavorite);
 
         note.setId(id);

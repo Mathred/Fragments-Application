@@ -25,6 +25,7 @@ import com.example.fragmentsapplication.data.NoteDataSourceResponse;
 import com.example.fragmentsapplication.swipeMenu.SwipeMenu;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.Date;
 import java.util.List;
 
 public class NoteListFragment extends Fragment {
@@ -101,7 +102,7 @@ public class NoteListFragment extends Fragment {
             case R.id.action_add:
                 dataSource.addNote(new Note("Added note " + dataSource.getSize(),
                         "This is added note",
-                        dateManager.getDateNowString(),
+                        new Date(),
                         false));
                 adapter.notifyItemInserted(dataSource.getSize() - 1);
                 recyclerView.smoothScrollToPosition(dataSource.getSize() - 1);
@@ -127,10 +128,7 @@ public class NoteListFragment extends Fragment {
         int position = adapter.getMenuPosition();
         switch (item.getItemId()) {
             case R.id.action_update:
-                dataSource.updateNoteData(position, new Note("Edited note " + position,
-                        "This is edited note",
-                        dateManager.getDateNowString(),
-                        false));
+                dataSource.updateNoteData(position, dataSource.getNote(position));
                 adapter.notifyItemChanged(position);
                 return true;
             case R.id.action_delete:
@@ -147,7 +145,13 @@ public class NoteListFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new NoteAdapter(dataSource, this);
+        adapter = new NoteAdapter(this);
+        adapter.setDataSource(new NoteDataSourceFirebaseImpl().init(new NoteDataSourceResponse() {
+            @Override
+            public void initialized(NoteDataSource noteDataSource) {
+                adapter.notifyDataSetChanged();
+            }
+        }));
         recyclerView.setAdapter(adapter);
 
         adapter.SetOnItemClickListener((view, position) -> {

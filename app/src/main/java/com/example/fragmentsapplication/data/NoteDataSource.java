@@ -15,4 +15,6 @@ public interface NoteDataSource {
     void addNote(Note note);
 
     void clearNoteData();
+
+    void resetNoteList();
 }
