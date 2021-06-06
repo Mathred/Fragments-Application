@@ -2,7 +2,6 @@ package com.example.fragmentsapplication.ui;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,7 +14,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.fragmentsapplication.DateManager;
 import com.example.fragmentsapplication.R;
 import com.example.fragmentsapplication.data.Note;
 import com.example.fragmentsapplication.data.NoteAdapter;
@@ -30,8 +28,6 @@ import java.util.List;
 
 public class NoteListFragment extends Fragment {
 
-    DateManager dateManager = new DateManager();
-    NoteAdapter.OnItemClickListener onItemClickListener;
     private NoteAdapter adapter;
     private RecyclerView recyclerView;
     private NoteDataSource dataSource;
@@ -49,12 +45,8 @@ public class NoteListFragment extends Fragment {
         initRecyclerView();
         setHasOptionsMenu(true);
 
-        dataSource = new NoteDataSourceFirebaseImpl().init(new NoteDataSourceResponse() {
-            @Override
-            public void initialized(NoteDataSource noteDataSource) {
-                adapter.notifyDataSetChanged();
-            }
-        });
+        dataSource = new NoteDataSourceFirebaseImpl().init(noteDataSource -> adapter.notifyDataSetChanged());
+        adapter.setDataSource(dataSource);
 
 
         FloatingActionButton floatingActionButton = view.findViewById(R.id.floating_action_add);
@@ -104,8 +96,8 @@ public class NoteListFragment extends Fragment {
                         "This is added note",
                         new Date(),
                         false));
-                adapter.notifyItemInserted(dataSource.getSize() - 1);
-                recyclerView.smoothScrollToPosition(dataSource.getSize() - 1);
+
+                adapter.notifyItemInserted(dataSource.getSize());
                 return true;
             case R.id.action_clear:
                 dataSource.clearNoteData();
@@ -116,41 +108,12 @@ public class NoteListFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = requireActivity().getMenuInflater();
-        inflater.inflate(R.menu.card_menu, menu);
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        int position = adapter.getMenuPosition();
-        switch (item.getItemId()) {
-            case R.id.action_update:
-                dataSource.updateNoteData(position, dataSource.getNote(position));
-                adapter.notifyItemChanged(position);
-                return true;
-            case R.id.action_delete:
-                dataSource.deleteNote(position);
-                adapter.notifyItemRemoved(position);
-                return true;
-        }
-
-
-        return super.onContextItemSelected(item);
-    }
-
     private void initRecyclerView() {
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         adapter = new NoteAdapter(this);
-        adapter.setDataSource(new NoteDataSourceFirebaseImpl().init(new NoteDataSourceResponse() {
-            @Override
-            public void initialized(NoteDataSource noteDataSource) {
-                adapter.notifyDataSetChanged();
-            }
+        adapter.setDataSource(new NoteDataSourceFirebaseImpl().init(noteDataSource -> {
         }));
         recyclerView.setAdapter(adapter);
 

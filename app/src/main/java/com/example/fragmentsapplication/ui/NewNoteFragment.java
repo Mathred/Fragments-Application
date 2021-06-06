@@ -1,24 +1,22 @@
 package com.example.fragmentsapplication.ui;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.TextView;
 
-import com.example.fragmentsapplication.DateManager;
+import androidx.fragment.app.Fragment;
+
+import com.example.fragmentsapplication.R;
 import com.example.fragmentsapplication.data.Note;
 import com.example.fragmentsapplication.data.NoteDataSource;
 import com.example.fragmentsapplication.data.NoteDataSourceFirebaseImpl;
-import com.example.fragmentsapplication.R;
 import com.example.fragmentsapplication.data.NoteDataSourceResponse;
+
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,11 +25,11 @@ import com.example.fragmentsapplication.data.NoteDataSourceResponse;
  */
 public class NewNoteFragment extends Fragment {
 
-    DateManager dateManager = new DateManager();
-    private Note note = new Note();
+    private final Note note = new Note();
     private NoteDataSource dataSource;
 
-    public NewNoteFragment() {}
+    public NewNoteFragment() {
+    }
 
     public static NewNoteFragment newInstance() {
         NewNoteFragment fragment = new NewNoteFragment();
@@ -50,10 +48,7 @@ public class NewNoteFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_new_note, container, false);
 
-        dataSource = new NoteDataSourceFirebaseImpl().init(new NoteDataSourceResponse() {
-            @Override
-            public void initialized(NoteDataSource noteDataSource) {
-            }
+        dataSource = new NoteDataSourceFirebaseImpl().init(noteDataSource -> {
         });
 
         initView(view);
@@ -74,19 +69,12 @@ public class NewNoteFragment extends Fragment {
 
     }
 
-    @NonNull
-    private TextView initDatePicker(View view) {
-        TextView noteDateCreatedEditText = view.findViewById(R.id.new_note_date_created);
-        noteDateCreatedEditText.setText(dateManager.getDateNowString());
-
-        return noteDateCreatedEditText;
-    }
-
     private void initSaveButton(View view, EditText noteNameEditText, EditText noteDescriptionEditText, CheckBox isFavorite) {
         Button saveButton = view.findViewById(R.id.action_save_new_note);
         saveButton.setOnClickListener(v -> {
             note.setName(String.valueOf(noteNameEditText.getText()));
             note.setFavorite(isFavorite.isChecked());
+            note.setDateCreated(new Date());
             note.setDescription(String.valueOf(noteDescriptionEditText.getText()));
             dataSource.addNote(note);
             requireActivity().getSupportFragmentManager().popBackStack();

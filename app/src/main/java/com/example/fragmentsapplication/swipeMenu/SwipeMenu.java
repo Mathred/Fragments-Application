@@ -26,15 +26,15 @@ import java.util.Queue;
 public abstract class SwipeMenu extends ItemTouchHelper.SimpleCallback {
 
     int buttonWidth;
-    private RecyclerView recyclerView;
+    private final RecyclerView recyclerView;
     private List<MyButton> buttonList;
-    private GestureDetector gestureDetector;
+    private final GestureDetector gestureDetector;
     private int swipePosition = -1;
     private float swipeThreshold = 0.5f;
-    private Map<Integer, List<MyButton>> buttonBuffer;
-    private Queue<Integer> removerQueue;
+    private final Map<Integer, List<MyButton>> buttonBuffer;
+    private final Queue<Integer> removerQueue;
 
-    private GestureDetector.SimpleOnGestureListener gestureListener = new GestureDetector.SimpleOnGestureListener() {
+    private final GestureDetector.SimpleOnGestureListener gestureListener = new GestureDetector.SimpleOnGestureListener() {
         @Override
         public boolean onSingleTapUp(MotionEvent e) {
             for (MyButton button : buttonList) {
@@ -46,7 +46,7 @@ public abstract class SwipeMenu extends ItemTouchHelper.SimpleCallback {
         }
     };
 
-    private View.OnTouchListener onTouchListener = new View.OnTouchListener() {
+    private final View.OnTouchListener onTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             if (swipePosition < 0) {
@@ -198,14 +198,14 @@ public abstract class SwipeMenu extends ItemTouchHelper.SimpleCallback {
     public abstract void instantiateMyButton(RecyclerView.ViewHolder viewHolder, List<MyButton> buffer);
 
     public class MyButton {
-        private String text;
-        private int textSize;
-        private int color;
+        private final String text;
+        private final int textSize;
+        private final int color;
         private int position;
         private RectF clickRegion;
-        private MyButtonClickListener listener;
-        private Context context;
-        private Resources resources;
+        private final MyButtonClickListener listener;
+        private final Context context;
+        private final Resources resources;
 
         public MyButton(Context context,
                         String text,

@@ -1,21 +1,11 @@
 package com.example.fragmentsapplication.data;
 
-import java.sql.Timestamp;
-import java.util.Date;
+import com.google.firebase.Timestamp;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class NoteDataMapping {
-
-    public static  class Fields {
-        public static final String ID = "id";
-        public static final String NAME = "name";
-        public static final String DESCRIPTION = "description";
-        public static final String DATE_CREATED = "dateCreated";
-        public static final String IS_FAVORITE = "isFavorite";
-
-
-    }
 
     public static Note toNoteData(String id, Map<String, Object> doc) {
 
@@ -31,10 +21,11 @@ public class NoteDataMapping {
             isFavorite = (boolean) doc.get(Fields.IS_FAVORITE);
         }
 
+        assert timestamp != null;
         Note note = new Note(
                 name,
                 description,
-                new Date(timestamp.getTime()),
+                timestamp.toDate(),
                 isFavorite);
 
         note.setId(id);
@@ -51,5 +42,15 @@ public class NoteDataMapping {
         doc.put(Fields.IS_FAVORITE, note.isFavorite());
 
         return doc;
+    }
+
+    public static class Fields {
+        public static final String ID = "id";
+        public static final String NAME = "name";
+        public static final String DESCRIPTION = "description";
+        public static final String DATE_CREATED = "dateCreated";
+        public static final String IS_FAVORITE = "isFavorite";
+
+
     }
 }

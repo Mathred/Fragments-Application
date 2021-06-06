@@ -10,7 +10,7 @@ public interface NoteDataSource {
 
     void deleteNote(int position);
 
-    void updateNoteData(int position, Note note);
+    void updateNoteData(Note note);
 
     void addNote(Note note);
 

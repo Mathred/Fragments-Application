@@ -25,14 +25,7 @@ public class NoteDataSourceFirebaseImpl implements NoteDataSource {
 
     public static final String NOTES_COLLECTION = "notes";
     public static final String TAG = "[NoteDataSourceFirebaseImpl]";
-
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-    private CollectionReference collection = db.collection(NOTES_COLLECTION);
-
-    private List<Note> noteList = new ArrayList<>();
-
-    private List<Note> defaultNoteList = new ArrayList<Note>() {{
+    private static final List<Note> DEFAULT_NOTE_LIST = new ArrayList<Note>() {{
         add(new Note("First", "This is first note", new Date(), true));
         add(new Note("Second", "This is second note", new Date(), false));
         add(new Note("Third", "This is third note", new Date(), false));
@@ -47,6 +40,9 @@ public class NoteDataSourceFirebaseImpl implements NoteDataSource {
         add(new Note("Twelve", "This is twelfth note", new Date(), false));
         add(new Note("Thirteen", "This is thirteenth note", new Date(), false));
     }};
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final CollectionReference collection = db.collection(NOTES_COLLECTION);
+    private List<Note> noteList = new ArrayList<>();
 
     @Override
     public NoteDataSource init(NoteDataSourceResponse noteDataSourceResponse) {
@@ -60,6 +56,7 @@ public class NoteDataSourceFirebaseImpl implements NoteDataSource {
                             noteList.clear();
 
                             for (QueryDocumentSnapshot document : task.getResult()) {
+
                                 Map<String, Object> doc = document.getData();
                                 Note note = NoteDataMapping.toNoteData(document.getId(), doc);
                                 noteList.add(note);
@@ -103,18 +100,14 @@ public class NoteDataSourceFirebaseImpl implements NoteDataSource {
     }
 
     @Override
-    public void updateNoteData(int position, Note note) {
+    public void updateNoteData(Note note) {
         collection.document(note.getId()).set(NoteDataMapping.toDocument(note));
     }
 
     @Override
     public void addNote(Note note) {
-        collection.add(NoteDataMapping.toDocument(note)).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-            @Override
-            public void onSuccess(DocumentReference documentReference) {
-                note.setId(documentReference.getId());
-            }
-        });
+        collection.add(NoteDataMapping.toDocument(note)).addOnSuccessListener(documentReference -> note.setId(documentReference.getId()));
+        noteList.add(note);
     }
 
     @Override
@@ -129,7 +122,7 @@ public class NoteDataSourceFirebaseImpl implements NoteDataSource {
     public void resetNoteList() {
         clearNoteData();
 
-        for (Note note : defaultNoteList) {
+        for (Note note : DEFAULT_NOTE_LIST) {
             addNote(note);
         }
     }

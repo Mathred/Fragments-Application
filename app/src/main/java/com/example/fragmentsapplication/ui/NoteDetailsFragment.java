@@ -12,14 +12,16 @@ import android.widget.EditText;
 import androidx.annotation.IdRes;
 import androidx.fragment.app.Fragment;
 
-import com.example.fragmentsapplication.DateManager;
-import com.example.fragmentsapplication.data.Note;
 import com.example.fragmentsapplication.R;
+import com.example.fragmentsapplication.data.Note;
+import com.example.fragmentsapplication.data.NoteDataSource;
+import com.example.fragmentsapplication.data.NoteDataSourceFirebaseImpl;
+import com.example.fragmentsapplication.data.NoteDataSourceResponse;
 
 public class NoteDetailsFragment extends Fragment {
 
     protected static final String ARG_NOTE = "note";
-    private final DateManager dateManager = new DateManager();
+    private NoteDataSource dataSource;
     private Note note;
 
     public NoteDetailsFragment() {
@@ -39,6 +41,9 @@ public class NoteDetailsFragment extends Fragment {
         if (getArguments() != null) {
             note = getArguments().getParcelable(ARG_NOTE);
         }
+        dataSource = new NoteDataSourceFirebaseImpl().init(noteDataSource -> {
+
+        });
     }
 
     @Override
@@ -59,6 +64,7 @@ public class NoteDetailsFragment extends Fragment {
         switch (editTextId) {
             case R.id.note_name:
                 editText.setText(note.getName());
+                break;
             case R.id.note_description:
                 editText.setText(note.getDescription());
         }
@@ -78,9 +84,11 @@ public class NoteDetailsFragment extends Fragment {
                 switch (editTextId) {
                     case R.id.note_name:
                         note.setName(String.valueOf(s));
+                        break;
                     case R.id.note_description:
                         note.setDescription(String.valueOf(s));
                 }
+                dataSource.updateNoteData(note);
             }
         });
     }
@@ -88,7 +96,10 @@ public class NoteDetailsFragment extends Fragment {
     private void initIsFavoriteCheckbox(View view) {
         CheckBox isFavorite = view.findViewById(R.id.note_favorite);
         isFavorite.setChecked(note.isFavorite());
-        isFavorite.setOnCheckedChangeListener((buttonView, isChecked) -> note.setFavorite(isChecked));
+        isFavorite.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            note.setFavorite(isChecked);
+            dataSource.updateNoteData(note);
+        });
     }
 
 }

@@ -15,9 +15,9 @@ import com.example.fragmentsapplication.R;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
 
+    private final Fragment fragment;
     NoteDataSource dataSource;
     private OnItemClickListener itemClickListener;
-    private final Fragment fragment;
     private int menuPosition;
 
     public NoteAdapter(Fragment fragment) {
@@ -63,10 +63,10 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        Note note;
         private final TextView name;
         private final TextView date;
         private final CheckBox isFavorite;
+        Note note;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -79,7 +79,10 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
             }
 
 
-            isFavorite.setOnCheckedChangeListener((buttonView, isChecked) -> note.setFavorite(isFavorite.isChecked()));
+            isFavorite.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                note.setFavorite(isFavorite.isChecked());
+                dataSource.updateNoteData(note);
+            });
 
             itemView.setOnClickListener(v -> {
                 if (itemClickListener != null) {
@@ -100,7 +103,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
         public void setData(Note note) {
             this.note = note;
             name.setText(note.getName());
-            date.setText((CharSequence) note.getDateCreated());
+            date.setText((String.valueOf(note.getDateCreated())));
             isFavorite.setChecked(note.isFavorite());
         }
     }
