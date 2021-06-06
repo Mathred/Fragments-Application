@@ -32,6 +32,7 @@ public class NoteListFragment extends Fragment {
     private RecyclerView recyclerView;
     private NoteDataSource dataSource;
 
+
     public static NoteListFragment newInstance() {
         return new NoteListFragment();
     }
