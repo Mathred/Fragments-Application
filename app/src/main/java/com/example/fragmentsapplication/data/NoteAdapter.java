@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -78,10 +79,12 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
                 fragment.registerForContextMenu(itemView);
             }
 
-
-            isFavorite.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                note.setFavorite(isFavorite.isChecked());
-                dataSource.updateNoteData(note);
+            isFavorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    note.setFavorite(isFavorite.isChecked());
+                    dataSource.updateNoteData(note);
+                }
             });
 
             itemView.setOnClickListener(v -> {

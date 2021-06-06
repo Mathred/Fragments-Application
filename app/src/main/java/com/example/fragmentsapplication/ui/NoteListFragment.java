@@ -96,13 +96,16 @@ public class NoteListFragment extends Fragment {
                         "This is added note",
                         new Date(),
                         false));
-
                 adapter.notifyItemInserted(dataSource.getSize());
+                recyclerView.scrollToPosition(dataSource.getSize()-1);
                 return true;
             case R.id.action_clear:
                 dataSource.clearNoteData();
                 adapter.notifyDataSetChanged();
                 return true;
+            case R.id.action_resetToDefaultList:
+                dataSource.resetNoteList();
+                adapter.notifyDataSetChanged();
         }
 
         return super.onOptionsItemSelected(item);

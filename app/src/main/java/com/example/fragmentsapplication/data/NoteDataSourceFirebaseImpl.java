@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class NoteDataSourceFirebaseImpl implements NoteDataSource {
 
@@ -46,7 +47,7 @@ public class NoteDataSourceFirebaseImpl implements NoteDataSource {
 
     @Override
     public NoteDataSource init(NoteDataSourceResponse noteDataSourceResponse) {
-        collection.orderBy(NoteDataMapping.Fields.DATE_CREATED, Query.Direction.DESCENDING)
+        collection.orderBy(NoteDataMapping.Fields.DATE_CREATED, Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @SuppressLint("LongLogTag")
