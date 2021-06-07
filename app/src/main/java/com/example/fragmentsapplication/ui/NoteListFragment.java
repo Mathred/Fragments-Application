@@ -112,8 +112,18 @@ public class NoteListFragment extends Fragment {
                 recyclerView.scrollToPosition(dataSource.getSize()-1);
                 return true;
             case R.id.action_clear:
-                dataSource.clearNoteData();
-                adapter.notifyDataSetChanged();
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+                builder.setTitle(R.string.deleteConfirmationAlertDialogTitle)
+                        .setMessage(R.string.clearAll)
+                        .setPositiveButton(R.string.delete, (dialog, which) -> {
+                            dataSource.clearNoteData();
+                            adapter.notifyDataSetChanged();
+                        })
+                        .setNeutralButton(R.string.cancel, (dialog, which) -> {
+                            dialog.dismiss();
+                        })
+                        .show();
                 return true;
             case R.id.action_resetToDefaultList:
                 dataSource.resetNoteList();
