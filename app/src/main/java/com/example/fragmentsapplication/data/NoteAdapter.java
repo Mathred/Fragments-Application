@@ -69,6 +69,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
         private final CheckBox isFavorite;
         Note note;
 
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.item_list_name);
@@ -101,6 +102,8 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
                 return true;
             });
 
+
+
         }
 
         public void setData(Note note) {
@@ -109,6 +112,9 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
             date.setText((String.valueOf(note.getDateCreated())));
             isFavorite.setChecked(note.isFavorite());
         }
+
+
+
     }
 
 }
