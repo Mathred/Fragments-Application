@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -66,8 +67,18 @@ public class NoteListFragment extends Fragment {
             @Override
             public void instantiateMyButton(RecyclerView.ViewHolder viewHolder, List<SwipeMenu.MyButton> buffer) {
                 buffer.add(new MyButton(getContext(), "Delete", 40, Color.RED, position -> {
-                    dataSource.deleteNote(position);
-                    adapter.notifyItemRemoved(position);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+                    builder.setTitle(R.string.deleteConfirmationAlertDialogTitle)
+                            .setMessage("Do you want to delete note " + dataSource.getNote(position).getName() + "?")
+                            .setPositiveButton(R.string.delete, (dialog, which) -> {
+                                dataSource.deleteNote(position);
+                                adapter.notifyItemRemoved(position);
+                            })
+                            .setNegativeButton(R.string.cancel, (dialog, which) -> {
+                                dialog.dismiss();
+                            })
+                            .show();
+
                 }));
                 buffer.add(new MyButton(getContext(), "Edit", 40, Color.BLUE, position -> {
                     NoteDetailsFragment noteDetailsFragment = NoteDetailsFragment.newInstance(dataSource.getNote(position));
