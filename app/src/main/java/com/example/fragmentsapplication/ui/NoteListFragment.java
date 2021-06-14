@@ -1,6 +1,6 @@
 package com.example.fragmentsapplication.ui;
 
-import android.graphics.Color;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -10,7 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,18 +21,18 @@ import com.example.fragmentsapplication.data.Note;
 import com.example.fragmentsapplication.data.NoteAdapter;
 import com.example.fragmentsapplication.data.NoteDataSource;
 import com.example.fragmentsapplication.data.NoteDataSourceFirebaseImpl;
-import com.example.fragmentsapplication.data.NoteDataSourceResponse;
-import com.example.fragmentsapplication.swipeMenu.SwipeMenu;
+import com.example.fragmentsapplication.swipeMenu.SwipeController;
+import com.example.fragmentsapplication.swipeMenu.SwipeControllerActions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Date;
-import java.util.List;
 
 public class NoteListFragment extends Fragment {
 
     private NoteAdapter adapter;
     private RecyclerView recyclerView;
     private NoteDataSource dataSource;
+
 
     public static NoteListFragment newInstance() {
         return new NoteListFragment();
@@ -60,25 +62,40 @@ public class NoteListFragment extends Fragment {
                     .commit();
         });
 
-        SwipeMenu swipeMenu = new SwipeMenu(requireContext(), recyclerView, 200) {
+        SwipeController swipeController = new SwipeController(new SwipeControllerActions() {
+            @Override
+            public void onLeftClicked(int position) {
+                NoteDetailsFragment noteDetailsFragment = NoteDetailsFragment.newInstance(dataSource.getNote(position));
+                assert getFragmentManager() != null;
+                getFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, noteDetailsFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
 
             @Override
-            public void instantiateMyButton(RecyclerView.ViewHolder viewHolder, List<SwipeMenu.MyButton> buffer) {
-                buffer.add(new MyButton(getContext(), "Delete", 40, Color.RED, position -> {
-                    dataSource.deleteNote(position);
-                    adapter.notifyItemRemoved(position);
-                }));
-                buffer.add(new MyButton(getContext(), "Edit", 40, Color.BLUE, position -> {
-                    NoteDetailsFragment noteDetailsFragment = NoteDetailsFragment.newInstance(dataSource.getNote(position));
-                    assert getFragmentManager() != null;
-                    getFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.fragment_container, noteDetailsFragment)
-                            .addToBackStack(null)
-                            .commit();
-                }));
+            public void onRightClicked(int position) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+                builder.setTitle(R.string.deleteConfirmationAlertDialogTitle)
+                        .setMessage("Delete note " + dataSource.getNote(position).getName() + "?")
+                        .setPositiveButton(R.string.delete, (dialog, which) -> {
+                            dataSource.deleteNote(position);
+                            adapter.notifyItemRemoved(position);
+                        })
+                        .setNeutralButton(R.string.cancel,(dialog, which) -> {})
+                        .show();
             }
-        };
+        });
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeController);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
+        recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void onDraw(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+                swipeController.onDraw(c);
+            }
+        });
 
         return view;
     }
@@ -100,8 +117,18 @@ public class NoteListFragment extends Fragment {
                 recyclerView.scrollToPosition(dataSource.getSize()-1);
                 return true;
             case R.id.action_clear:
-                dataSource.clearNoteData();
-                adapter.notifyDataSetChanged();
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+                builder.setTitle(R.string.deleteConfirmationAlertDialogTitle)
+                        .setMessage(R.string.clearAll)
+                        .setPositiveButton(R.string.delete, (dialog, which) -> {
+                            dataSource.clearNoteData();
+                            adapter.notifyDataSetChanged();
+                        })
+                        .setNeutralButton(R.string.cancel, (dialog, which) -> {
+                            dialog.dismiss();
+                        })
+                        .show();
                 return true;
             case R.id.action_resetToDefaultList:
                 dataSource.resetNoteList();
